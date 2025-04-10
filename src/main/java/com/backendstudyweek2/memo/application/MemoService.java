@@ -21,4 +21,9 @@ public class MemoService {
         memoRepository.save(memo);
         return memo.getId();
     }
+
+    public Memo getMemo(Long memoId) {
+        Memo memo = memoRepository.getMemo(memoId);
+        return memo;
+    }
 }
