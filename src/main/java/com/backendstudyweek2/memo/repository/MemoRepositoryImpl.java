@@ -19,6 +19,28 @@ public class MemoRepositoryImpl implements MemoRepository {
     private final File file = new File("memos.json");
 
     @Override
+    public boolean isExistMemo(Long id) {
+        try {
+            List<Memo> memos = new ArrayList<>();
+
+            if (file.exists() && file.length() > 0) {
+                memos = objectMapper.readValue(file, new TypeReference<List<Memo>>() {
+                });
+            }
+
+            for (Memo m : memos) {
+                if (m.getId().equals(id)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("메모 조회 실패", e);
+        }
+
+        return false;
+    }
+
+    @Override
     public void save(Memo memo) {
         try {
             List<Memo> memos = new ArrayList<>();

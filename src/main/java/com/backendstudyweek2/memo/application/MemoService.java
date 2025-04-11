@@ -13,6 +13,10 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     public Long createMemo(CreateMemoRequest request) {
+        if (memoRepository.isExistMemo(request.id())) {
+            throw new RuntimeException("메모 ID가 이미 존재합니다!");
+        }
+
         Memo memo = Memo.builder()
                 .id(request.id())
                 .content(request.content())
