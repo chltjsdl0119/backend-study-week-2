@@ -4,6 +4,7 @@ import com.backendstudyweek2.memo.application.MemoService;
 import com.backendstudyweek2.memo.application.dto.CreateMemoRequest;
 import com.backendstudyweek2.memo.application.dto.CreateMemoResponse;
 import com.backendstudyweek2.memo.application.dto.GetMemoResponse;
+import com.backendstudyweek2.memo.application.dto.UpdateMemoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,11 @@ public class MemoController {
     public ResponseEntity<GetMemoResponse> getMemo(@PathVariable Long id) {
         GetMemoResponse response = new GetMemoResponse(memoService.getMemo(id));
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateMemo(@PathVariable Long id, @RequestBody UpdateMemoRequest request) {
+        memoService.updateMemo(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body("메모 수정 성공!");
     }
 }

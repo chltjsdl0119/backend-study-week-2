@@ -1,6 +1,7 @@
 package com.backendstudyweek2.memo.application;
 
 import com.backendstudyweek2.memo.application.dto.CreateMemoRequest;
+import com.backendstudyweek2.memo.application.dto.UpdateMemoRequest;
 import com.backendstudyweek2.memo.application.interfaces.MemoRepository;
 import com.backendstudyweek2.memo.domain.Memo;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,14 @@ public class MemoService {
     public Memo getMemo(Long memoId) {
         Memo memo = memoRepository.getMemo(memoId);
         return memo;
+    }
+
+    public void updateMemo(Long id, UpdateMemoRequest request) {
+        Memo memo = Memo.builder()
+                .id(id)
+                .content(request.content())
+                .build();
+
+        memoRepository.updateMemo(memo);
     }
 }

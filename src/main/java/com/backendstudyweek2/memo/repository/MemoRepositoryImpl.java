@@ -64,14 +64,51 @@ public class MemoRepositoryImpl implements MemoRepository {
     @Override
     public Memo getMemo(Long memoId) {
         try {
-            if (!file.exists()) return null;
+            if (!file.exists()) {
+                return null;
+            }
+
             List<Memo> memos = objectMapper.readValue(file, new TypeReference<List<Memo>>() {});
+
             return memos.stream()
                     .filter(m -> m.getId().equals(memoId))
                     .findFirst()
                     .orElseThrow(() -> new NoSuchElementException("메모를 찾을 수 없습니다."));
+
         } catch (IOException e) {
             throw new RuntimeException("메모 조회 실패", e);
+        }
+    }
+
+    @Override
+    public void updateMemo(Memo updatedMemo) {
+        try {
+            if (!file.exists() || file.length() == 0) {
+                throw new RuntimeException("메모 파일이 존재하지 않거나 비어 있습니다.");
+            }
+
+            // 전체 메모 리스트 로드
+            List<Memo> memos = objectMapper.readValue(file, new TypeReference<List<Memo>>() {});
+
+            // 메모를 찾아서 수정
+            boolean found = false;
+            for (int i = 0; i < memos.size(); i++) {
+                if (memos.get(i).getId().equals(updatedMemo.getId())) {
+                    memos.set(i, updatedMemo);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw new NoSuchElementException("업데이트할 메모를 찾을 수 없습니다. ID: " + updatedMemo.getId());
+            }
+
+            // 다시 전체 저장
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, memos);
+
+        } catch (IOException e) {
+            throw new RuntimeException("메모 업데이트 실패", e);
         }
     }
 }
