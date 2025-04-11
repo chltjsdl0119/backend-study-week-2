@@ -26,7 +26,7 @@ public class MemoController {
     @GetMapping("/{id}")
     public ResponseEntity<GetMemoResponse> getMemo(@PathVariable Long id) {
         GetMemoResponse response = new GetMemoResponse(memoService.getMemo(id));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")

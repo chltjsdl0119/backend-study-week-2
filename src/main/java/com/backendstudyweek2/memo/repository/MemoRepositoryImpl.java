@@ -140,7 +140,7 @@ public class MemoRepositoryImpl implements MemoRepository {
             // 다시 전체 저장
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, memos);
         } catch (IOException e) {
-            throw new RuntimeException("메모 업데이트 실패", e);
+            throw new RuntimeException("메모 삭제 실패", e);
         }
     }
 }
