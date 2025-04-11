@@ -40,4 +40,8 @@ public class MemoService {
 
         memoRepository.updateMemo(memo);
     }
+
+    public void deleteMemo(Long id) {
+        memoRepository.deleteMemo(id);
+    }
 }

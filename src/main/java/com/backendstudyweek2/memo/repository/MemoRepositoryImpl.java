@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -107,6 +108,37 @@ public class MemoRepositoryImpl implements MemoRepository {
             // 다시 전체 저장
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, memos);
 
+        } catch (IOException e) {
+            throw new RuntimeException("메모 업데이트 실패", e);
+        }
+    }
+
+    @Override
+    public void deleteMemo(Long id) {
+        try {
+            if (!file.exists() || file.length() == 0) {
+                throw new RuntimeException("메모 파일이 존재하지 않거나 비어 있습니다.");
+            }
+
+            // 전체 메모 리스트 로드
+            List<Memo> memos = objectMapper.readValue(file, new TypeReference<LinkedList<Memo>>() {});
+
+            // 메모를 찾아서 수정
+            boolean found = false;
+            for (int i = 0; i < memos.size(); i++) {
+                if (memos.get(i).getId().equals(id)) {
+                    memos.remove(i);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw new NoSuchElementException("삭제할 메모를 찾을 수 없습니다. ID: " + id);
+            }
+
+            // 다시 전체 저장
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, memos);
         } catch (IOException e) {
             throw new RuntimeException("메모 업데이트 실패", e);
         }

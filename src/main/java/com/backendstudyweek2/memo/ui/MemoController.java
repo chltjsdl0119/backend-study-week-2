@@ -34,4 +34,10 @@ public class MemoController {
         memoService.updateMemo(id, request);
         return ResponseEntity.status(HttpStatus.OK).body("메모 수정 성공!");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteMemo(@PathVariable Long id) {
+        memoService.deleteMemo(id);
+        return ResponseEntity.status(HttpStatus.OK).body("메모 삭제 성공!");
+    }
 }

@@ -8,4 +8,5 @@ public interface MemoRepository {
     void save(Memo memo);
     Memo getMemo(Long memoId);
     void updateMemo(Memo updateMemo);
+    void deleteMemo(Long id);
 }
